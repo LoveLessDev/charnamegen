@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Character Name Generator</title>
+  <style>
+
+  @font-face {
+    font-family: 'Fontin SmallCaps Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Fontin SmallCaps Regular'), url('Fontin-SmallCaps.woff') format('woff');
+  }
+
+    html,
+    body {
+      height: 100vh;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      /*background: #f4e1c3;*/
+      background: #0c0b0b;
+      color: #CAC2A8;
+    }
+
+    a {
+      color: brown;
+    }
+
+    .groups {
+      padding: 20px;
+      margin: 0;
+      list-style-type: none;
+      font-family: "Fontin SmallCaps Regular", serif;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      width: 90%;
+      /*background: #f4e1c3;*/
+      color: #CAC2A8;
+      transform: translateY(-30px);
+      justify-content: center;
+    }
+    @media (min-width: 768px) {
+      .groups {
+        font-size: 50px;
+        padding: 40px;
+        width: 70%;
+      }
+    }
+    .groups_item {
+      padding: 0;
+    }
+
+    .tools {
+      position: absolute;
+      bottom: 20px;
+      width: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tools .go {
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-family: "Palatino Linotype", serif;
+      background: #d19638;
+      border: 1px solid #000;
+    }
+
+    .tools span {
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="groups" id="groups"><span class="groups_item groups_item-1"></span><span class="groups_item groups_item-2"></span></div>
+
+	<div>
+	  <label for="prefix">Custom Prefix:</label>
+	  <input type="text" id="prefix" />
+	</div>
+	<br>
+	<div>
+	  <label for="suffix">Custom Suffix:</label>
+	  <input type="text" id="suffix" />
+	</div>
+
+
+
+  <div class="tools">
+    <button class="go" id="go">Generate</button>
+    <span>Character Name Generator</span>
+    <!-- <a href="#" id="download" download>Save</a> -->
+  </div>
+
+  <script>
+    const lor = [
+		//prefixes
+      ['Phre','Chi', 'Inno', 'Sin', 'At', 'Dory', 'Az', 'Tar', 'Veru', 'Caspi', 'Iza', 'Cadi', 'Mali', 'Doed', 'Geo', 'Voll', 
+	  'Victa', 'On', 'Ad', 'Rig', 'Ezo', 'Ka', 'Kar', 'Mara', 'Glar', 'Sen', 'Gem', 'Astra', 'Vasti', 'Sko', 'Ein', 'Gri', 'Mar',
+	  'Shav', 'Bru', 'Titu', 'Vas', 'Desh', 'Mala', 'Sola', 'Luna', 'Dia', 'Pie', 'Romi', 'Peran', 'Ca', 'Domi', 'Gravi', 'Ase', 
+	  'Fair', 'Dares', 'Hyr', 'Lavian', 'Zer', 'Hrim', 'Bar', 'Veri', 'El', 'Sha', 'Drox', 'Si', 'Za', 'Cas', 'Be', 'Va', 'Sio', 
+	  'Arohon', 'Hine', 'Kita', 'Ngama', 'Rama', 'Tasa', 'Taw', 'Tuko', 'Vala', 'Bry', 'Car', 'En', 'Had', 'Hil', 'Joy', 'Krai', 'Lot', 
+	  'Mait', 'Mis', 'Ol', 'Sa', 'Rala', 'Da', 'Ara', 'Gru', 'Abbe', 'Rys', 'Tsoa', 'Gre', 'Yu', 'Sha', 'Garu', 'Trini', 'Gari', 'Tol', 
+	  'Bes', 'Nes', 'Tark', 'Ali', 'Era', 'Hele', 'Silk', 'Yee', 'Oak', 'Cla', 'Har', 'Ki', 'Oy', 'Peta', 'Va', 'Tasu', 'Ban', 'La', 'Utu', 
+	  'Vilen', 'Ira', 'Cata', 'Ha', 'Leo', 'To', 'Vag', 'Vori', 'Al', 'Jun', 'Ni', 'Kir', 'Osha', 'Octa', 'Bly', 'Bl', 'Mor', 'Imer', 'Im', 'The', 'Tha', 'Cor', 'Cort'],
+        //suffixes
+	  ['cia', 'tus', 'cence', 'ziri', 'ani', 'meri', 'cus', 'so', 'garo', 're', 'fri', 'rio', 'dar', 'wald', 'myr', 'om', 'ui',
+	  'keth', 'ryn', 'tari', 'ling', 'li', 'ri', 'the', 'har', 'gor', 'ceus', 'ronne', 'tiri', 'ret', 'chai', 'ris', 'lla', 'ty',
+	  'ra', 'dus', 'vas', 'nus', 'cius', 'nath', 'graves', 'ri', 'ga', 'phi', 'nor', 'an', 'tania', 'der', 'per', 'rus', 'na', 'sia',
+	  'ast', 'al', 'sa', 'gui', 'kora', 'va', 'hu', 'ko', 'lio', 'hoa', 'hama', 'den', 'far', 'rey', 'lock', 'tyn', 'lin', 'moa', 'sy',
+	  'lem', 'kesh', 'varo', 'kali', 'kul', 'rath', 'latha', 'goth', 'ust', 'gul', 'kari', 'khan', 'valdi', 'man', 'tel', 'leigh', 'mir',
+	  'rissa', 'gan', 'un', 'nja', 'ni', 'non', 'ta', 'sha', 'rina', 'reon', 'ku', 'ci', 'ac', 'bi', 'vius', 'via', 'gol', 'peer', 'ytal',
+	  'ger', 'gal', 'ythe', 'gana', 'gala', 'ira', 'iri', 'otl', 'il', 'eril', 'risa', 'tana', 'ana']
+    ];
+
+    const go = document.getElementById('go');
+    const elems = document.getElementsByClassName('groups_item');
+
+    function random(arr) {
+      return arr[Math.floor(Math.random()*arr.length)];
+    }
+
+	go.addEventListener('click', () => {
+	  const customPrefix = document.getElementById('prefix').value; // Retrieve custom prefix value
+	  const customSuffix = document.getElementById('suffix').value; // Retrieve custom suffix value
+
+	  for (var i = 0; i < lor.length; i++) {
+		elems[i].innerHTML = '';
+		for (var j = 0; j < 10; j++) {
+		  if (customPrefix && customSuffix) {
+			elems[i].innerHTML += '<div class="lore-name">' + customPrefix + customSuffix + '</div>';
+		  } else if (customPrefix) {
+			elems[i].innerHTML += '<div class="lore-name">' + customPrefix + random(lor[1]) + '</div>';
+		  } else if (customSuffix) {
+			elems[i].innerHTML += '<div class="lore-name">' + random(lor[0]) + customSuffix + '</div>';
+		  } else {
+			if (i === 0) {
+			  elems[i].innerHTML += '<div class="lore-name">' + random(lor[i]) + random(lor[1]) + '</div>';
+			} else {
+			  elems[i].innerHTML += '<div class="lore-name">' + random(lor[0]) + random(lor[i]) + '</div>';
+			}
+		  }
+		}
+	  }
+
+	  const node = document.getElementById('groups');
+
+	  domtoimage.toPng(node)
+		.then(function(dataUrl) {
+		  let link = document.getElementById('download');
+		  link.href = dataUrl;
+		})
+		.catch(function(error) {
+		  console.error('oops, something went wrong!', error);
+		});
+	});
+
+	go.click();
+
+  </script>
+
+</body>
+</html>
